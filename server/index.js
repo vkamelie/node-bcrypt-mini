@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const bcrypt = require('bcryptjs');
+const controller = require('../server/controller/authController.js')
 const massive = require('massive');
 
 const app = express();
@@ -16,11 +16,20 @@ app.use(
     resave: false,
     saveUninitialized: false
   })
-);
+); 
 
 massive(CONNECTION_STRING).then(db => {
   app.set('db', db);
 });
+
+app.route('/auth/signup').post(controller.signup)
+.get()
+// .post()
+// .put()
+// .delete()
+app.route('/auth/login').post(controller.login)
+app.route("auth/logout").get(controller.logout)
+app.route("/api/user").get(controll.er)
 
 app.listen(SERVER_PORT, () => {
   console.log(`Listening on port: ${SERVER_PORT}`);
